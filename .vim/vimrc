@@ -23,6 +23,10 @@ Plugin 'scrooloose/syntastic'
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
 
+" Vim Airline
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -47,6 +51,7 @@ set lazyredraw          " redraw only when we need to.
 set showmatch           " highlight matching [{()}]
 set incsearch           " search as characters are entered
 set hlsearch            " highlight matches
+set clipboard=unnamed   " paste from system clipboard
 
 " don't show docstring window for jedi-autocompletion
 autocmd FileType python setlocal completeopt-=preview
@@ -60,6 +65,10 @@ au InsertLeave * match ExtraWhitespace /\s\+$/
 syntax enable
 colorscheme gruvbox
 set background=dark    " Setting dark mode
+
+" set wrong spelled words underlined
+hi SpellBad cterm=underline
+map <F8> :setlocal spell spelllang=de <return>
 
 " Showing line numbers and length
 " set relativenumber  " show line numbers
@@ -106,12 +115,7 @@ let g:session_autosave = "no"
 
 " Fast wrap for auto pairs
 let g:AutoPairsShortcutFastWrap = '<F5>'
-
-" configure powerline
-set laststatus=2
-python3 from powerline.vim import setup as powerline_setup
-python3 powerline_setup()
-python3 del powerline_setup
+let g:AutoPairsShortcutToggle = '<F4>'
 
 " show definitions on right split (, - d)
 let g:jedi#use_splits_not_buffers = "right"
@@ -127,6 +131,7 @@ let g:UltiSnipsEditSplit="vertical"
 " open .tex files as latex
 let g:tex_flavor = "latex"
 let g:vimtex_view_general_viewer = 'zathura'
+let g:vimtex_compiler_latexmk ={'build_dir' : 'build',}
 
 " change latex completion to space ctrl
 autocmd FileType tex inoremap <buffer> <C-@> <C-x><C-o>
@@ -134,3 +139,16 @@ autocmd FileType tex inoremap <buffer> <C-@> <C-x><C-o>
 " use j and k for swiping through the completion
 inoremap <expr> j ((pumvisible())?("\<C-n>"):("j"))
 inoremap <expr> k ((pumvisible())?("\<C-p>"):("k"))
+
+" Enter always goes to beginning of newlien
+" Shift-j breaks the line in normal mode
+" Shift-k brings back the line
+inoremap <CR> <Esc>o
+nnoremap J i<CR><Esc>
+nnoremap K $a<Space><Del><Esc>
+
+" Airline
+" let g:airline#extensions#tabline#enabled = 1
+let g:airline_powerline_fonts = 1
+let g:airline_theme='bubblegum'
+set encoding=UTF-8
